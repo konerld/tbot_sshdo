@@ -133,8 +133,8 @@ def command_text_hi(m):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def command_default(m):
     # this is the standard reply to a normal message
-    msg = Lang()
-    bot.send_message(m.chat.id, msg.bot.reply.excepts.no_cmd)
+    msg = Lang().bot
+    bot.send_message(m.chat.id, msg.reply.excepts.no_cmd.rus)
                             # m.text
 
 
@@ -210,7 +210,7 @@ class YAMLobj(dict):
         del self.__dict__[key]
 
 
-def Lang(yamlfile="Lang.yml"):
+def Lang(yamlfile="Lang.yaml"):
     """
     Преобразовывает .yaml файл, передаваемый функции AdminPortal() в класс
     В результате можно вызывать содержимое значений yaml фйла,
@@ -224,7 +224,7 @@ def Lang(yamlfile="Lang.yml"):
         return result
     except Exception as e:
         # LOG.error(e)
-        raise Exception(f"Can't import {yamlfile}")
+        raise Exception("Can't import yaml file")
 
 
 if __name__ == '__main__':

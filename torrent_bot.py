@@ -33,6 +33,8 @@ hideBoard = types.ReplyKeyboardRemove()  # if sent as reply_markup, will hide th
 def get_user_step(uid):
     if uid in userStep:
         return userStep[uid]
+        print('knownUsers-list : \n',knownUsers)
+        print('userStep-dict : \n',userStep)
     else:
         knownUsers.append(uid)
         userStep[uid] = 0

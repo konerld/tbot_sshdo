@@ -1,0 +1,6 @@
+bot:
+    reply:
+        exepts:
+            no_cmd:
+                rus: Неизвестная команда {}. Убедитесь, что введена правильная команда!
+                eng: Unknown command '{}'. Make sure the correct command is entered!

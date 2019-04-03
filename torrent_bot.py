@@ -133,7 +133,10 @@ def command_text_hi(m):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def command_default(m):
     # this is the standard reply to a normal message
-    bot.send_message(m.chat.id, "I don't understand \"" + m.text + "\"\nMaybe try the help page at /help")
+    msg = Lang()
+    bot.send_message(m.chat.id, msg.bot.reply.excepts.no_cmd)
+                            # m.text
+
 
 
 
@@ -172,6 +175,57 @@ def get_file(file):
     url2 = "https://api.telegram.org/file/%s/%s" % (token, file_name)
     print(url2)
 """
+
+class YAMLobj(dict):
+    """
+    Class for function Lang()
+    """
+    def __init__(self, args):
+        super(YAMLobj, self).__init__(args)
+        if isinstance(args, dict):
+            for k, v in args.items():
+                if not isinstance(v, dict):
+                    try:
+                        self[k] = v.decode('utf-8')
+                    except:
+                        self[k] = v
+                else:
+                    self.__setattr__(k, YAMLobj(v))
+
+    def __getattr__(self, attr):
+        return self.get(attr)
+
+    def __setattr__(self, key, value):
+        self.__setitem__(key, value)
+
+    def __setitem__(self, key, value):
+        super(YAMLobj, self).__setitem__(key, value)
+        self.__dict__.update({key: value})
+
+    def __delattr__(self, item):
+        self.__delitem__(item)
+
+    def __delitem__(self, key):
+        super(YAMLobj, self).__delitem__(key)
+        del self.__dict__[key]
+
+
+def Lang(yamlfile="Lang.yml"):
+    """
+    Преобразовывает .yaml файл, передаваемый функции AdminPortal() в класс
+    В результате можно вызывать содержимое значений yaml фйла,
+        вызывая переменные yaml файла, как методы AdminPortal
+    Например:
+        common.AdminPortal().Portal.menu.button.xpath
+    """
+    try:
+        dict_result = yaml.load(open(yamlfile), Loader=yaml.FullLoader)
+        result = YAMLobj(dict_result)
+        return result
+    except Exception as e:
+        # LOG.error(e)
+        raise Exception(f"Can't import {yamlfile}")
+
 
 if __name__ == '__main__':
 #    bot.polling(none_stop=True)

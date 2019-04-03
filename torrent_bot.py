@@ -37,6 +37,8 @@ def get_user_step(uid):
         knownUsers.append(uid)
         userStep[uid] = 0
         print("New user detected, who hasn't used \"/start\" yet")
+        print('knownUsers-list : \n',knownUsers)
+        print('userStep-dict : \n',userStep)
         return 0
 
 

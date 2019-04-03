@@ -10,6 +10,7 @@ token = config.token
 bot = telebot.TeleBot(token)
 downloan_dir = '/data/Media/Download'
 
+
 knownUsers = []  # todo: save these in a file,
 userStep = {}  # so they won't reset every time the bot restarts
 
@@ -17,14 +18,18 @@ commands = {  # command description used in the "help" command
     'start'       : 'Get used to the bot',
     'help'        : 'Gives you information about the available commands',
     'sendLongText': 'A test using the \'send_chat_action\' command',
-    'getImage'    : 'A test using multi-stage messages, '
-                        'custom keyboard, and media sending'
+    'getImage'    : 'A test using multi-stage messages, custom keyboard, and media sending'
 }
 
 imageSelect = types.ReplyKeyboardMarkup(one_time_keyboard=True)  # create the image selection keyboard
 imageSelect.add('cock', 'pussy')
+
 hideBoard = types.ReplyKeyboardRemove()  # if sent as reply_markup, will hide the keyboard
 
+
+# error handling if user isn't known yet
+# (obsolete once known users are saved to file, because all users
+  # had to use the /start command and are therefore known to the bot)
 def get_user_step(uid):
     if uid in userStep:
         return userStep[uid]
@@ -34,6 +39,8 @@ def get_user_step(uid):
         print("New user detected, who hasn't used \"/start\" yet")
         return 0
 
+
+# only used for console output now
 def listener(messages):
     """
     When new messages arrive TeleBot will call this function.
@@ -44,9 +51,10 @@ def listener(messages):
             print(str(m.chat.first_name) + " [" + str(m.chat.id) + "]: " + m.text)
 
 
-# bot.set_update_listener(listener)  # register listener
+bot = telebot.TeleBot(token)
+bot.set_update_listener(listener)  # register listener
 
-'''
+
 # handle the "/start" command
 @bot.message_handler(commands=['start'])
 def command_start(m):
@@ -122,7 +130,11 @@ def command_text_hi(m):
 def command_default(m):
     # this is the standard reply to a normal message
     bot.send_message(m.chat.id, "I don't understand \"" + m.text + "\"\nMaybe try the help page at /help")
-'''
+
+
+
+
+
 
 '''
 @bot.message_handler(content_types=['document'])
